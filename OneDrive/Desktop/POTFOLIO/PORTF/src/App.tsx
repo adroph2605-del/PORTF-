@@ -9,8 +9,10 @@ const ME = {
   role: { en: "Computer Engineering", sw: "Uhandisi wa Kompyuta" },
   location: "Mbeya, Tanzania",
   bio: {
-    en: "Computer Engineering student passionate about building practical digital tools for African entrepreneurs. I design and develop platforms that help small businesses manage sales, stock, debts and growth — turning complex operations into simple, clear systems.",
-    sw: "Mwanafunzi wa Uhandisi wa Kompyuta anayependa kujenga zana za kidijitali zinazosaidia wajasiriamali wa Afrika. Ninabuni na kuendeleza majukwaa yanayosaidia biashara ndogo kudhibiti mauzo, stoki, madeni na ukuaji — kugeuza shughuli ngumu kuwa mifumo rahisi na wazi.",
+    en: "I’m a Computer Engineering student and ICT professional passionate about building high-quality digital solutions. My expertise includes Web & App Development, AI and AutoCAD Design
+Build • Innovate • Impact 🚀.",
+    sw: "Mimi ni mwanafunzi wa Computer Engineering na mtaalamu wa ICT ninayependa kujenga suluhisho bora za kidijitali. Nina ujuzi katika utengenezaji wa Web na Apps Development, AI na AutoCAD Design.
+Jenga • Buni • Vumbua • Leta Mabadiliko 🚀.",
   },
   avatar: "/profile.png",
   email: "adroph2605@gmail.com",
@@ -37,14 +39,14 @@ const PROJECTS = [
   },
   {
     id: 2,
-    title: "Zentrust",
+    title: "ZENTRUST",
     type: { en: "Mobile App", sw: "Programu ya Simu" },
     description: {
       en: "Zentrust is a global B2B data exchange platform that securely connects businesses with financial institutions (banks, credit unions, and insurers) to share normalized financial data with user consent.",
       sw: "Zentrust ni jukwaa la kimataifa la kubadilishana data kati ya biashara (B2B) linalounganisha kwa usalama biashara na taasisi za fedha (benki, vyama vya mikopo, na bima) ili kushiriki data za kifedha zilizoratibiwa kwa idhini ya mtumiaji.",
     },
     tags: ["React Native", "Expo", "TypeScript"],
-    year: "2023",
+    year: "2026",
     img: "https://images.unsplash.com/photo-1555421689-491a97ff2040?w=600&h=600&fit=crop&auto=format",
     color: "#E91E8C",
     duration: { en: "5 months", sw: "Miezi 5" },
@@ -120,8 +122,8 @@ const T = {
     name: "Name",
     email: "Email",
     message: "Message",
-    namePh: "Your name",
-    emailPh: "you@example.com",
+    namePh: "Eng Adroph",
+    emailPh: "adroph2605@gmail.com",
     messagePh: "What are you working on?",
     send: "Send Message",
     sending: "Sending…",
