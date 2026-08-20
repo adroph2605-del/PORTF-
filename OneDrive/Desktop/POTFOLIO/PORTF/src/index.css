@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Circular+Std:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --color-spotify-green: #1DB954;
+  --color-spotify-green-light: #1ed760;
+  --color-bg-base: #121212;
+  --color-bg-elevated: #181818;
+  --color-bg-highlight: #282828;
+  --color-bg-press: #000000;
+  --color-text-base: #FFFFFF;
+  --color-text-subdued: #A7A7A7;
+  --color-text-bright: #FFFFFF;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #121212;
+  color: #fff;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #535353;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  background: #535353;
+  height: 4px;
+  border-radius: 2px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #fff;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  margin-top: -4px;
+}
+input[type="range"]:hover::-webkit-slider-runnable-track {
+  background: #1DB954;
+}
