@@ -31,12 +31,12 @@ const PROJECTS = [
   },
   {
     id: 2,
-    title: "Zentrust",
+    title: "ZENTRUST",
     type: "Mobile App",
     description:
       "Zentrust is a global B2B data exchange platform that securely connects businesses with financial institutions (banks, credit unions, and insurers) to share normalized financial data with user consent.",
     tags: ["React Native", "Expo", "TypeScript"],
-    year: "2023",
+    year: "2026",
     img: "https://images.unsplash.com/photo-1555421689-491a97ff2040?w=600&h=600&fit=crop&auto=format",
     color: "#E91E8C",
     duration: "5 months",
