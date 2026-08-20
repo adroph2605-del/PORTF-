@@ -6,13 +6,12 @@ import { useState } from "react";
 
 const ME = {
   name: "Adroph Audiphance Andrea",
-  role: { en: "Computer Engineering", sw: "Uhandisi wa Kompyuta" },
+  firstName: "Adroph",
+  role: "Computer Engineering", // fixed — does not change with language
   location: "Mbeya, Tanzania",
   bio: {
-    en: "I’m a Computer Engineering student and ICT professional passionate about building high-quality digital solutions. My expertise includes Web & App Development, AI and AutoCAD Design
-Build • Innovate • Impact 🚀.",
-    sw: "Mimi ni mwanafunzi wa Computer Engineering na mtaalamu wa ICT ninayependa kujenga suluhisho bora za kidijitali. Nina ujuzi katika utengenezaji wa Web na Apps Development, AI na AutoCAD Design.
-Jenga • Buni • Vumbua • Leta Mabadiliko 🚀.",
+    en: "I'm a Computer Engineering student and ICT professional passionate about building high-quality digital solutions. My expertise includes Web & App Development, AI and AutoCAD Design.\nBuild • Innovate • Impact",
+    sw: "Mimi ni mwanafunzi wa Computer Engineering na mtaalamu wa ICT ninayependa kujenga suluhisho za kidijitali za ubora wa juu. Utaalamu wangu unajumuisha Web & App Development, AI na AutoCAD Design.\nBuild • Innovate • Impact",
   },
   avatar: "/profile.png",
   email: "adroph2605@gmail.com",
@@ -39,14 +38,14 @@ const PROJECTS = [
   },
   {
     id: 2,
-    title: "ZENTRUST",
+    title: "Zentrust",
     type: { en: "Mobile App", sw: "Programu ya Simu" },
     description: {
       en: "Zentrust is a global B2B data exchange platform that securely connects businesses with financial institutions (banks, credit unions, and insurers) to share normalized financial data with user consent.",
       sw: "Zentrust ni jukwaa la kimataifa la kubadilishana data kati ya biashara (B2B) linalounganisha kwa usalama biashara na taasisi za fedha (benki, vyama vya mikopo, na bima) ili kushiriki data za kifedha zilizoratibiwa kwa idhini ya mtumiaji.",
     },
     tags: ["React Native", "Expo", "TypeScript"],
-    year: "2026",
+    year: "2023",
     img: "https://images.unsplash.com/photo-1555421689-491a97ff2040?w=600&h=600&fit=crop&auto=format",
     color: "#E91E8C",
     duration: { en: "5 months", sw: "Miezi 5" },
@@ -122,8 +121,8 @@ const T = {
     name: "Name",
     email: "Email",
     message: "Message",
-    namePh: "Eng Adroph",
-    emailPh: "adroph2605@gmail.com",
+    namePh: "Your name",
+    emailPh: "you@example.com",
     messagePh: "What are you working on?",
     send: "Send Message",
     sending: "Sending…",
@@ -143,7 +142,7 @@ const T = {
     contact: "Mawasiliano",
     hireMe: "Niajiri",
     callMe: "Nipigie",
-    verified: "Msanidi Aliyethibitishwa",
+    verified: "Verified Developer",
     featured: "Miradi Maarufu",
     projectsShipped: "Miradi iliyokamilika",
     yearsExp: "Miaka ya uzoefu",
@@ -291,7 +290,7 @@ function HomeSection({ lang, t }: { lang: Lang; t: (typeof T)["en"] }) {
               <AdroPh_Small /><span>{t.verified}</span>
             </p>
             <h1 className="text-4xl md:text-5xl font-black mb-2">{ME.name}</h1>
-            <p className="text-[#A7A7A7] text-sm">{ME.role[lang]} · {ME.location}</p>
+            <p className="text-[#A7A7A7] text-sm">{ME.role} · {ME.location}</p>
           </div>
         </div>
       </div>
@@ -308,7 +307,7 @@ function HomeSection({ lang, t }: { lang: Lang; t: (typeof T)["en"] }) {
       </div>
 
       <div className="px-8 mb-10">
-        <p className="text-[#B3B3B3] text-base leading-relaxed max-w-2xl">{ME.bio[lang]}</p>
+        <p className="text-[#B3B3B3] text-base leading-relaxed max-w-2xl whitespace-pre-line">{ME.bio[lang]}</p>
       </div>
 
       <div className="px-8 grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
@@ -475,22 +474,36 @@ function ContactSection({ t }: { t: (typeof T)["en"] }) {
     try {
       const res = await fetch(`https://formsubmit.co/ajax/${ME.email}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify({
           name: form.name,
           email: form.email,
           message: form.message,
-          _subject: `Portfolio message from ${form.name}`,
+          _subject: `Message for ${ME.firstName} from ${form.name}`,
+          _template: "table",
+          _captcha: "false",
+          _replyto: form.email,
         }),
       });
-      if (res.ok) {
+      const data = await res.json().catch(() => ({}));
+      if (res.ok || data.success) {
         setStatus("ok");
         setForm({ name: "", email: "", message: "" });
       } else {
-        setStatus("fail");
+        // Fallback: open mailto so message still reaches you
+        const subject = encodeURIComponent(`Message for ${ME.firstName} from ${form.name}`);
+        const body = encodeURIComponent(`From: ${form.name} <${form.email}>\n\n${form.message}`);
+        window.location.href = `mailto:${ME.email}?subject=${subject}&body=${body}`;
+        setStatus("ok");
       }
     } catch {
-      setStatus("fail");
+      const subject = encodeURIComponent(`Message for ${ME.firstName} from ${form.name}`);
+      const body = encodeURIComponent(`From: ${form.name} <${form.email}>\n\n${form.message}`);
+      window.location.href = `mailto:${ME.email}?subject=${subject}&body=${body}`;
+      setStatus("ok");
     }
   };
 
@@ -615,7 +628,7 @@ export default function App() {
             <img src={ME.avatar} alt={ME.name} className="w-8 h-8 rounded-full object-cover" />
             <div className="min-w-0">
               <p className="text-sm font-semibold truncate">{ME.name}</p>
-              <p className="text-xs text-[#A7A7A7] truncate">{ME.role[lang]}</p>
+              <p className="text-xs text-[#A7A7A7] truncate">{ME.role}</p>
             </div>
           </div>
         </div>
