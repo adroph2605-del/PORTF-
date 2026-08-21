@@ -269,9 +269,9 @@ function PhoneIcon() {
 
 function HomeSection({ lang, t }: { lang: Lang; t: (typeof T)["en"] }) {
   return (
-    <div className="pb-16">
+    <div className="pb-20 md:pb-16">
       <div
-        className="relative h-72 flex items-end px-8 pb-6 rounded-t-lg overflow-hidden mb-6"
+        className="relative min-h-[220px] sm:min-h-[260px] md:h-72 flex items-end px-4 sm:px-6 md:px-8 pb-5 md:pb-6 overflow-hidden mb-6"
         style={{ background: "linear-gradient(180deg, #2a6b3f 0%, #1a472a 60%, #121212 100%)" }}
       >
         <div
@@ -283,22 +283,26 @@ function HomeSection({ lang, t }: { lang: Lang; t: (typeof T)["en"] }) {
             filter: "blur(40px)",
           }}
         />
-        <div className="relative flex items-end gap-6">
-          <img src={ME.avatar} alt={ME.name} className="w-36 h-36 rounded-full object-cover shadow-2xl border-4 border-[#121212]" />
-          <div className="pb-2">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#1DB954] mb-1 flex items-center gap-2">
+        <div className="relative flex flex-col sm:flex-row items-center sm:items-end gap-4 sm:gap-6 w-full">
+          <img
+            src={ME.avatar}
+            alt={ME.name}
+            className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full object-cover shadow-2xl border-4 border-[#121212] shrink-0"
+          />
+          <div className="pb-1 text-center sm:text-left">
+            <p className="text-xs font-bold uppercase tracking-widest text-[#1DB954] mb-1 flex items-center justify-center sm:justify-start gap-2">
               <AdroPh_Small /><span>{t.verified}</span>
             </p>
-            <h1 className="text-4xl md:text-5xl font-black mb-2">{ME.name}</h1>
-            <p className="text-[#A7A7A7] text-sm">{ME.role} · {ME.location}</p>
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-black mb-1 sm:mb-2 leading-tight">{ME.name}</h1>
+            <p className="text-[#A7A7A7] text-xs sm:text-sm">{ME.role} · {ME.location}</p>
           </div>
         </div>
       </div>
 
-      <div className="px-8 flex items-center gap-4 mb-10 flex-wrap">
-        <a href={`mailto:${ME.email}`} className="bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold text-sm px-8 py-3 rounded-full transition-colors">{t.hireMe}</a>
-        <a href={`tel:${ME.phoneLink}`} className="border border-[#535353] hover:border-white text-white font-bold text-sm px-8 py-3 rounded-full transition-colors">{t.callMe}</a>
-        <div className="ml-auto flex items-center gap-4 text-[#A7A7A7]">
+      <div className="px-4 sm:px-6 md:px-8 flex items-center gap-3 mb-8 flex-wrap">
+        <a href={`mailto:${ME.email}`} className="bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold text-sm px-6 sm:px-8 py-2.5 sm:py-3 rounded-full transition-colors">{t.hireMe}</a>
+        <a href={`tel:${ME.phoneLink}`} className="border border-[#535353] hover:border-white text-white font-bold text-sm px-6 sm:px-8 py-2.5 sm:py-3 rounded-full transition-colors">{t.callMe}</a>
+        <div className="w-full sm:w-auto sm:ml-auto flex items-center justify-center sm:justify-end gap-4 text-[#A7A7A7] mt-2 sm:mt-0">
           <a href={ME.github} target="_blank" rel="noreferrer" className="hover:text-white transition-colors" title="GitHub"><GithubIcon /></a>
           <a href={ME.linkedin} target="_blank" rel="noreferrer" className="hover:text-white transition-colors" title="LinkedIn"><LinkedInIcon /></a>
           <a href={`mailto:${ME.email}`} className="hover:text-white transition-colors" title="Email"><MailIcon active /></a>
@@ -306,26 +310,26 @@ function HomeSection({ lang, t }: { lang: Lang; t: (typeof T)["en"] }) {
         </div>
       </div>
 
-      <div className="px-8 mb-10">
-        <p className="text-[#B3B3B3] text-base leading-relaxed max-w-2xl whitespace-pre-line">{ME.bio[lang]}</p>
+      <div className="px-4 sm:px-6 md:px-8 mb-8">
+        <p className="text-[#B3B3B3] text-sm sm:text-base leading-relaxed max-w-2xl whitespace-pre-line">{ME.bio[lang]}</p>
       </div>
 
-      <div className="px-8 grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+      <div className="px-4 sm:px-6 md:px-8 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-10">
         {[
           { label: t.projectsShipped, value: "2+" },
           { label: t.yearsExp, value: "2+" },
           { label: t.technologies, value: "7+" },
           { label: t.focus, value: t.focusValue },
         ].map((s) => (
-          <div key={s.label} className="bg-[#181818] hover:bg-[#242424] rounded-lg p-5 transition-colors">
-            <p className="text-3xl font-black text-[#1DB954]">{s.value}</p>
-            <p className="text-sm text-[#A7A7A7] mt-1">{s.label}</p>
+          <div key={s.label} className="bg-[#181818] hover:bg-[#242424] rounded-lg p-4 sm:p-5 transition-colors">
+            <p className="text-2xl sm:text-3xl font-black text-[#1DB954]">{s.value}</p>
+            <p className="text-xs sm:text-sm text-[#A7A7A7] mt-1">{s.label}</p>
           </div>
         ))}
       </div>
 
-      <div className="px-8">
-        <h2 className="text-2xl font-bold mb-4">{t.featured}</h2>
+      <div className="px-4 sm:px-6 md:px-8">
+        <h2 className="text-xl sm:text-2xl font-bold mb-4">{t.featured}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {PROJECTS.map((p) => (
             <ProjectCard key={p.id} project={p} lang={lang} />
@@ -375,7 +379,7 @@ function ProjectsSection({ lang, t }: { lang: Lang; t: (typeof T)["en"] }) {
   const filtered = filter === "All" ? PROJECTS : PROJECTS.filter((p) => p.type.en === filter);
 
   return (
-    <div className="px-8 pb-16">
+    <div className="px-4 sm:px-6 md:px-8 pb-20 md:pb-16">
       <h2 className="text-3xl font-black mb-2">{t.projectsTitle}</h2>
       <p className="text-[#A7A7A7] mb-6">{t.projectsSub}</p>
       <div className="flex flex-wrap gap-2 mb-8">
@@ -403,7 +407,7 @@ function ProjectsSection({ lang, t }: { lang: Lang; t: (typeof T)["en"] }) {
 function SkillsSection({ t }: { t: (typeof T)["en"] }) {
   const categories = Array.from(new Set(SKILLS.map((s) => s.category)));
   return (
-    <div className="px-8 pb-16">
+    <div className="px-4 sm:px-6 md:px-8 pb-20 md:pb-16">
       <h2 className="text-3xl font-black mb-2">{t.skillsTitle}</h2>
       <p className="text-[#A7A7A7] mb-8">{t.skillsSub}</p>
       <div className="flex flex-wrap gap-3 mb-10">
@@ -433,7 +437,7 @@ function SkillsSection({ t }: { t: (typeof T)["en"] }) {
 
 function ExperienceSection({ lang, t }: { lang: Lang; t: (typeof T)["en"] }) {
   return (
-    <div className="px-8 pb-16">
+    <div className="px-4 sm:px-6 md:px-8 pb-20 md:pb-16">
       <h2 className="text-3xl font-black mb-2">{t.experienceTitle}</h2>
       <p className="text-[#A7A7A7] mb-8">{t.experienceSub}</p>
       <div className="space-y-3">
@@ -521,7 +525,7 @@ function ContactSection({ t }: { t: (typeof T)["en"] }) {
   ];
 
   return (
-    <div className="px-8 pb-16">
+    <div className="px-4 sm:px-6 md:px-8 pb-20 md:pb-16">
       <h2 className="text-3xl font-black mb-2">{t.contactTitle}</h2>
       <p className="text-[#A7A7A7] mb-8">{t.contactSub}</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -582,6 +586,8 @@ function ContactSection({ t }: { t: (typeof T)["en"] }) {
 export default function App() {
   const [activeSection, setActiveSection] = useState("home");
   const [lang, setLang] = useState<Lang>("en");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
   const t = T[lang];
 
   const NAV_ITEMS = [
@@ -592,67 +598,226 @@ export default function App() {
     { id: "contact", label: t.contact, icon: MailIcon },
   ];
 
+  const goTo = (id: string) => {
+    setActiveSection(id);
+    setMenuOpen(false);
+  };
+
+  const enterSite = () => {
+    setShowWelcome(false);
+  };
+
   const renderSection = () => {
     switch (activeSection) {
-      case "home": return <HomeSection lang={lang} t={t} />;
-      case "projects": return <ProjectsSection lang={lang} t={t} />;
-      case "skills": return <SkillsSection t={t} />;
-      case "experience": return <ExperienceSection lang={lang} t={t} />;
-      case "contact": return <ContactSection t={t} />;
-      default: return <HomeSection lang={lang} t={t} />;
+      case "home":
+        return <HomeSection lang={lang} t={t} />;
+      case "projects":
+        return <ProjectsSection lang={lang} t={t} />;
+      case "skills":
+        return <SkillsSection t={t} />;
+      case "experience":
+        return <ExperienceSection lang={lang} t={t} />;
+      case "contact":
+        return <ContactSection t={t} />;
+      default:
+        return <HomeSection lang={lang} t={t} />;
     }
   };
 
+  // ── Welcome / splash screen ──
+  if (showWelcome) {
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#121212] text-white px-6">
+        <div className="absolute inset-0 opacity-30 bg-gradient-to-b from-[#1a472a] via-[#121212] to-[#121212]" />
+        <div className="relative flex flex-col items-center text-center max-w-sm">
+          <div className="mb-8 scale-150">
+            <AdroPh />
+          </div>
+          <img
+            src={ME.avatar}
+            alt={ME.name}
+            className="w-28 h-28 rounded-full object-cover border-4 border-[#1DB954]/40 shadow-2xl mb-6"
+          />
+          <p className="text-[#1DB954] text-xs font-bold uppercase tracking-widest mb-2">
+            Verified Developer
+          </p>
+          <h1 className="text-2xl sm:text-3xl font-black mb-2">{ME.name}</h1>
+          <p className="text-[#A7A7A7] text-sm mb-1">Computer Engineering</p>
+          <p className="text-white text-lg font-semibold mt-4 mb-8">
+            {lang === "sw" ? "Karibu Adroph Portfolio" : "Welcome to Adroph Portfolio"}
+          </p>
+          <button
+            onClick={enterSite}
+            className="bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold text-sm px-10 py-3.5 rounded-full transition-colors shadow-lg shadow-[#1DB954]/20"
+          >
+            {lang === "sw" ? "Ingia" : "Enter"}
+          </button>
+          <div className="flex gap-2 mt-8">
+            <button
+              onClick={() => setLang("en")}
+              className={`text-xs font-bold px-4 py-1.5 rounded-full ${lang === "en" ? "bg-white text-black" : "text-[#A7A7A7] border border-[#333]"}`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLang("sw")}
+              className={`text-xs font-bold px-4 py-1.5 rounded-full ${lang === "sw" ? "bg-white text-black" : "text-[#A7A7A7] border border-[#333]"}`}
+            >
+              SW
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex h-screen bg-[#121212] text-white overflow-hidden">
-      <aside className="w-60 flex-shrink-0 flex flex-col bg-black">
-        <div className="flex items-center px-4 pt-6 pb-6"><AdroPh /></div>
-        <nav className="flex-1 px-2 space-y-1">
+    <div className="flex h-[100dvh] bg-[#121212] text-white overflow-hidden relative">
+      {/* Mobile overlay when menu open */}
+      {menuOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 z-30 md:hidden"
+          onClick={() => setMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar — desktop always visible; mobile slide-in */}
+      <aside
+        className={`
+          fixed md:static inset-y-0 left-0 z-40
+          w-64 max-w-[80vw] flex flex-col bg-black
+          transform transition-transform duration-300 ease-out
+          ${menuOpen ? "translate-x-0" : "-translate-x-full"}
+          md:translate-x-0 md:flex-shrink-0
+        `}
+      >
+        <div className="flex items-center justify-between px-4 pt-5 pb-4">
+          <button onClick={() => goTo("home")} className="flex items-center">
+            <AdroPh />
+          </button>
+          <button
+            onClick={() => setMenuOpen(false)}
+            className="md:hidden w-9 h-9 flex items-center justify-center rounded-full bg-[#282828] text-[#A7A7A7] hover:text-white"
+            aria-label="Close menu"
+          >
+            ✕
+          </button>
+        </div>
+
+        <nav className="flex-1 px-2 space-y-1 overflow-y-auto">
           {NAV_ITEMS.map(({ id, label, icon: Icon }) => (
-            <button key={id} onClick={() => setActiveSection(id)}
-              className={`w-full flex items-center gap-4 px-3 py-2.5 rounded-md text-sm font-semibold transition-colors ${
-                activeSection === id ? "bg-[#282828] text-white" : "text-[#A7A7A7] hover:text-white"
-              }`}>
-              <Icon active={activeSection === id} />{label}
+            <button
+              key={id}
+              onClick={() => goTo(id)}
+              className={`w-full flex items-center gap-4 px-3 py-3 rounded-md text-sm font-semibold transition-colors ${
+                activeSection === id
+                  ? "bg-[#282828] text-white"
+                  : "text-[#A7A7A7] hover:text-white"
+              }`}
+            >
+              <Icon active={activeSection === id} />
+              {label}
             </button>
           ))}
         </nav>
+
         <div className="px-4 pb-3">
           <div className="flex rounded-full bg-[#181818] p-1">
-            <button onClick={() => setLang("en")} className={`flex-1 text-xs font-bold py-1.5 rounded-full transition-colors ${lang === "en" ? "bg-[#1DB954] text-black" : "text-[#A7A7A7] hover:text-white"}`}>EN</button>
-            <button onClick={() => setLang("sw")} className={`flex-1 text-xs font-bold py-1.5 rounded-full transition-colors ${lang === "sw" ? "bg-[#1DB954] text-black" : "text-[#A7A7A7] hover:text-white"}`}>SW</button>
+            <button
+              onClick={() => setLang("en")}
+              className={`flex-1 text-xs font-bold py-1.5 rounded-full transition-colors ${
+                lang === "en" ? "bg-[#1DB954] text-black" : "text-[#A7A7A7] hover:text-white"
+              }`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLang("sw")}
+              className={`flex-1 text-xs font-bold py-1.5 rounded-full transition-colors ${
+                lang === "sw" ? "bg-[#1DB954] text-black" : "text-[#A7A7A7] hover:text-white"
+              }`}
+            >
+              SW
+            </button>
           </div>
         </div>
+
         <div className="p-4 border-t border-[#282828]">
           <div className="flex items-center gap-3">
-            <img src={ME.avatar} alt={ME.name} className="w-8 h-8 rounded-full object-cover" />
+            <img src={ME.avatar} alt={ME.name} className="w-9 h-9 rounded-full object-cover" />
             <div className="min-w-0">
-              <p className="text-sm font-semibold truncate">{ME.name}</p>
+              <p className="text-sm font-semibold truncate">{ME.firstName}</p>
               <p className="text-xs text-[#A7A7A7] truncate">{ME.role}</p>
             </div>
           </div>
         </div>
       </aside>
 
-      <main className="flex-1 overflow-y-auto bg-gradient-to-b from-[#1a3a2a] via-[#181818] to-[#121212]">
-        <div className="sticky top-0 z-10 flex items-center justify-between px-8 py-4 bg-[#121212]/80 backdrop-blur-md border-b border-[#282828]/40">
-          <div className="flex items-center gap-2 flex-wrap">
+      {/* Main content — full width on mobile */}
+      <main className="flex-1 flex flex-col min-w-0 overflow-hidden bg-gradient-to-b from-[#1a3a2a] via-[#181818] to-[#121212]">
+        {/* Top bar */}
+        <div className="sticky top-0 z-20 flex items-center justify-between gap-2 px-3 sm:px-6 py-3 bg-[#121212]/90 backdrop-blur-md border-b border-[#282828]/40">
+          {/* Logo = menu toggle on mobile */}
+          <button
+            onClick={() => setMenuOpen(true)}
+            className="md:hidden flex items-center gap-2 shrink-0"
+            aria-label="Open menu"
+          >
+            <AdroPh_Small />
+            <span className="font-bold text-sm">droph</span>
+          </button>
+
+          {/* Desktop nav pills */}
+          <div className="hidden md:flex items-center gap-1 flex-wrap">
             {NAV_ITEMS.map(({ id, label }) => (
-              <button key={id} onClick={() => setActiveSection(id)}
-                className={`text-sm font-semibold px-4 py-1.5 rounded-full transition-colors ${
-                  activeSection === id ? "bg-white text-black" : "text-[#A7A7A7] hover:text-white"
-                }`}>{label}</button>
+              <button
+                key={id}
+                onClick={() => goTo(id)}
+                className={`text-sm font-semibold px-3 py-1.5 rounded-full transition-colors ${
+                  activeSection === id
+                    ? "bg-white text-black"
+                    : "text-[#A7A7A7] hover:text-white"
+                }`}
+              >
+                {label}
+              </button>
             ))}
           </div>
-          <div className="flex items-center gap-3">
+
+          {/* Mobile: current section title */}
+          <p className="md:hidden flex-1 text-center text-sm font-semibold truncate">
+            {NAV_ITEMS.find((n) => n.id === activeSection)?.label}
+          </p>
+
+          <div className="flex items-center gap-2 shrink-0">
             <div className="hidden sm:flex rounded-full bg-[#181818] p-0.5">
-              <button onClick={() => setLang("en")} className={`text-xs font-bold px-3 py-1 rounded-full transition-colors ${lang === "en" ? "bg-[#1DB954] text-black" : "text-[#A7A7A7]"}`}>EN</button>
-              <button onClick={() => setLang("sw")} className={`text-xs font-bold px-3 py-1 rounded-full transition-colors ${lang === "sw" ? "bg-[#1DB954] text-black" : "text-[#A7A7A7]"}`}>SW</button>
+              <button
+                onClick={() => setLang("en")}
+                className={`text-xs font-bold px-2.5 py-1 rounded-full transition-colors ${
+                  lang === "en" ? "bg-[#1DB954] text-black" : "text-[#A7A7A7]"
+                }`}
+              >
+                EN
+              </button>
+              <button
+                onClick={() => setLang("sw")}
+                className={`text-xs font-bold px-2.5 py-1 rounded-full transition-colors ${
+                  lang === "sw" ? "bg-[#1DB954] text-black" : "text-[#A7A7A7]"
+                }`}
+              >
+                SW
+              </button>
             </div>
-            <a href={`mailto:${ME.email}`} className="bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold text-sm px-5 py-2 rounded-full transition-colors whitespace-nowrap">{t.hireMe}</a>
+            <a
+              href={`mailto:${ME.email}`}
+              className="bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold text-xs sm:text-sm px-3 sm:px-5 py-2 rounded-full transition-colors whitespace-nowrap"
+            >
+              {t.hireMe}
+            </a>
           </div>
         </div>
-        <div>{renderSection()}</div>
+
+        <div className="flex-1 overflow-y-auto overscroll-contain">{renderSection()}</div>
       </main>
     </div>
   );
