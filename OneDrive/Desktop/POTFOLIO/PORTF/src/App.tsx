@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //  TAARIFA ZAKO — badilisha hapa tu
@@ -583,6 +583,274 @@ function ContactSection({ t }: { t: (typeof T)["en"] }) {
   );
 }
 
+
+// ─── PORTFOLIO AI ASSISTANT ──────────────────────────────────────────────────
+
+type ChatMsg = { role: "user" | "bot"; text: string };
+
+function answerQuestion(q: string, lang: Lang): string {
+  const s = q.toLowerCase().trim();
+  const isSw = lang === "sw";
+
+  // greetings
+  if (/^(hi|hello|hey|habari|mambo|salaam|salama|jambo|good\s*(morning|afternoon|evening))/.test(s) || s.length < 3) {
+    return isSw
+      ? `Habari! Mimi ni msaidizi wa AI wa ${ME.firstName}. Unaweza kuniuliza kuhusu wasifu wake, miradi, ujuzi, elimu, au jinsi ya kuwasiliana naye.`
+      : `Hi! I'm ${ME.firstName}'s AI assistant. Ask me about his background, projects, skills, education, or how to contact him.`;
+  }
+
+  // who / about / bio
+  if (/who|about|bio|wasifu|nani|mimi|introduce|introduction|tell me about|eleza|maelezo/.test(s)) {
+    return isSw
+      ? `${ME.name} ni ${ME.role} kutoka ${ME.location}. ${ME.bio.sw}`
+      : `${ME.name} is a ${ME.role} student based in ${ME.location}. ${ME.bio.en}`;
+  }
+
+  // name
+  if (/name|jina/.test(s) && !/company|kampuni/.test(s)) {
+    return isSw
+      ? `Jina lake kamili ni ${ME.name}. Unaweza kumwita ${ME.firstName}.`
+      : `His full name is ${ME.name}. You can call him ${ME.firstName}.`;
+  }
+
+  // location
+  if (/where|location|live|based|mahali|anaishi|toka|from|mbeya|tanzania/.test(s)) {
+    return isSw
+      ? `${ME.firstName} anaishi ${ME.location}.`
+      : `${ME.firstName} is based in ${ME.location}.`;
+  }
+
+  // contact / email / phone
+  if (/contact|email|barua|simu|phone|call|reach|wasiliana|namba|number/.test(s)) {
+    return isSw
+      ? `Unaweza kumfikia ${ME.firstName} kupitia:\n• Email: ${ME.email}\n• Simu: ${ME.phone}\n• GitHub: ${ME.github}\n• LinkedIn: ${ME.linkedin}`
+      : `You can reach ${ME.firstName} via:\n• Email: ${ME.email}\n• Phone: ${ME.phone}\n• GitHub: ${ME.github}\n• LinkedIn: ${ME.linkedin}`;
+  }
+
+  // skills
+  if (/skill|ujuzi|technology|technologies|tech|stack|anajua|know|tools|zana/.test(s)) {
+    const list = SKILLS.map((x) => x.name).join(", ");
+    return isSw
+      ? `Ujuzi wa ${ME.firstName} unajumuisha: ${list}. Ana uzoefu wa Web & App Development, AI na AutoCAD Design.`
+      : `${ME.firstName}'s skills include: ${list}. He works with Web & App Development, AI, and AutoCAD Design.`;
+  }
+
+  // projects / wajasiliali / zentrust
+  if (/project|miradi|built|amejenga|work|portfolio|wajasil|zentrust/.test(s)) {
+    const lines = PROJECTS.map(
+      (p) => `• ${p.title} (${p.year}) — ${p.description[lang]}`
+    ).join("\n\n");
+    return isSw
+      ? `Miradi kuu ya ${ME.firstName}:\n\n${lines}`
+      : `${ME.firstName}'s main projects:\n\n${lines}`;
+  }
+
+  // experience / work / job
+  if (/experience|uzoefu|work|job|kazi|freelance|company|kampuni|hub/.test(s)) {
+    const lines = EXPERIENCE.map(
+      (e) => `• ${e.role[lang]} @ ${e.company} (${e.period[lang]}) — ${e.desc[lang]}`
+    ).join("\n");
+    return isSw
+      ? `Uzoefu wa ${ME.firstName}:\n${lines}`
+      : `${ME.firstName}'s experience:\n${lines}`;
+  }
+
+  // education
+  if (/education|elimu|university|chuo|degree|shahada|study|anasoma|school/.test(s)) {
+    return isSw
+      ? `${ME.firstName} anasoma BSc. Computer Engineering and Technology katika Mbeya University of Science and Technology (MUST).`
+      : `${ME.firstName} is studying BSc. Computer Engineering and Technology at Mbeya University of Science and Technology (MUST).`;
+  }
+
+  // hire / available
+  if (/hire|available|freelance|ajiri|kazi|open to|collaborate|ushirikiano/.test(s)) {
+    return isSw
+      ? `Ndiyo — ${ME.firstName} yuko tayari kwa kazi za freelance, full-time, na ushirikiano. Tuma ujumbe kupitia Contact au email: ${ME.email}`
+      : `Yes — ${ME.firstName} is open to freelance, full-time roles, and collaborations. Reach him via Contact or email: ${ME.email}`;
+  }
+
+  // role / what does he do
+  if (/role|do|does|kazi gani|anayofanya|profession|professional/.test(s)) {
+    return isSw
+      ? `${ME.firstName} ni ${ME.role}. Anajenga suluhisho za kidijitali: Web & App Development, AI na AutoCAD Design.`
+      : `${ME.firstName} is in ${ME.role}. He builds digital solutions in Web & App Development, AI, and AutoCAD Design.`;
+  }
+
+  // default
+  return isSw
+    ? `Sijaelewa swali hilo vizuri. Jaribu kuuliza kuhusu: wasifu, miradi (WAJASILIAMALI / Zentrust), ujuzi, elimu, uzoefu, au mawasiliano ya ${ME.firstName}.`
+    : `I'm not sure about that. Try asking about ${ME.firstName}'s bio, projects (WAJASILIAMALI / Zentrust), skills, education, experience, or contact info.`;
+}
+
+function PortfolioAI({ lang }: { lang: Lang }) {
+  const [open, setOpen] = useState(false);
+  const [input, setInput] = useState("");
+  const [msgs, setMsgs] = useState<ChatMsg[]>([
+    {
+      role: "bot",
+      text:
+        lang === "sw"
+          ? `Habari! Mimi ni AI assistant wa ${ME.firstName}. Niulize chochote kuhusu wasifu, miradi, au ujuzi wake.`
+          : `Hi! I'm ${ME.firstName}'s AI assistant. Ask me anything about his profile, projects, or skills.`,
+    },
+  ]);
+  const [typing, setTyping] = useState(false);
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [msgs, typing, open]);
+
+  // refresh greeting when language changes and chat was only greeting
+  useEffect(() => {
+    setMsgs([
+      {
+        role: "bot",
+        text:
+          lang === "sw"
+            ? `Habari! Mimi ni AI assistant wa ${ME.firstName}. Niulize chochote kuhusu wasifu, miradi, au ujuzi wake.`
+            : `Hi! I'm ${ME.firstName}'s AI assistant. Ask me anything about his profile, projects, or skills.`,
+      },
+    ]);
+  }, [lang]);
+
+  const send = () => {
+    const q = input.trim();
+    if (!q || typing) return;
+    setInput("");
+    setMsgs((m) => [...m, { role: "user", text: q }]);
+    setTyping(true);
+    // small delay so it feels like "thinking"
+    setTimeout(() => {
+      const a = answerQuestion(q, lang);
+      setMsgs((m) => [...m, { role: "bot", text: a }]);
+      setTyping(false);
+    }, 450 + Math.min(q.length * 12, 800));
+  };
+
+  const suggestions =
+    lang === "sw"
+      ? ["Wewe ni nani?", "Miradi yake?", "Ujuzi?", "Mawasiliano?"]
+      : ["Who is he?", "Projects?", "Skills?", "Contact?"];
+
+  return (
+    <>
+      {/* Floating button */}
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="fixed bottom-5 right-5 z-50 w-14 h-14 rounded-full bg-[#1DB954] hover:bg-[#1ed760] text-black shadow-lg shadow-[#1DB954]/30 flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
+        aria-label="Open AI chat"
+      >
+        {open ? (
+          <span className="text-xl font-bold">✕</span>
+        ) : (
+          <svg viewBox="0 0 24 24" className="w-7 h-7 fill-current">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z" />
+          </svg>
+        )}
+      </button>
+
+      {/* Chat panel */}
+      {open && (
+        <div className="fixed bottom-24 right-4 sm:right-5 z-50 w-[min(100vw-1.5rem,360px)] h-[min(70vh,480px)] bg-[#181818] border border-[#282828] rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+          {/* Header */}
+          <div className="flex items-center gap-3 px-4 py-3 bg-[#121212] border-b border-[#282828]">
+            <div className="w-9 h-9 rounded-full bg-[#1DB954] flex items-center justify-center text-black font-black text-sm">
+              AI
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-bold truncate">{ME.firstName} AI</p>
+              <p className="text-[10px] text-[#1DB954]">
+                {lang === "sw" ? "Online • Uliza kuhusu Adroph" : "Online • Ask about Adroph"}
+              </p>
+            </div>
+            <button
+              onClick={() => setOpen(false)}
+              className="w-8 h-8 rounded-full hover:bg-[#282828] text-[#A7A7A7] flex items-center justify-center"
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto px-3 py-3 space-y-3">
+            {msgs.map((m, i) => (
+              <div
+                key={i}
+                className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+              >
+                <div
+                  className={`max-w-[85%] rounded-2xl px-3.5 py-2 text-sm leading-relaxed whitespace-pre-line ${
+                    m.role === "user"
+                      ? "bg-[#1DB954] text-black rounded-br-md"
+                      : "bg-[#282828] text-white rounded-bl-md"
+                  }`}
+                >
+                  {m.text}
+                </div>
+              </div>
+            ))}
+            {typing && (
+              <div className="flex justify-start">
+                <div className="bg-[#282828] rounded-2xl rounded-bl-md px-4 py-2 text-sm text-[#A7A7A7]">
+                  ● ● ●
+                </div>
+              </div>
+            )}
+            <div ref={bottomRef} />
+          </div>
+
+          {/* Suggestions */}
+          {msgs.length <= 2 && (
+            <div className="px-3 pb-2 flex flex-wrap gap-1.5">
+              {suggestions.map((s) => (
+                <button
+                  key={s}
+                  onClick={() => {
+                    setInput(s);
+                    setTimeout(() => {
+                      const q = s;
+                      setInput("");
+                      setMsgs((m) => [...m, { role: "user", text: q }]);
+                      setTyping(true);
+                      setTimeout(() => {
+                        setMsgs((m) => [...m, { role: "bot", text: answerQuestion(q, lang) }]);
+                        setTyping(false);
+                      }, 400);
+                    }, 0);
+                  }}
+                  className="text-[11px] px-2.5 py-1 rounded-full bg-[#282828] text-[#B3B3B3] hover:text-white hover:bg-[#333] transition-colors"
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Input */}
+          <div className="p-3 border-t border-[#282828] flex gap-2">
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && send()}
+              placeholder={lang === "sw" ? "Andika swali..." : "Ask a question..."}
+              className="flex-1 bg-[#121212] border border-[#282828] rounded-full px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1DB954] text-white placeholder:text-[#535353]"
+            />
+            <button
+              onClick={send}
+              disabled={!input.trim() || typing}
+              className="w-10 h-10 rounded-full bg-[#1DB954] hover:bg-[#1ed760] disabled:opacity-40 text-black font-bold flex items-center justify-center shrink-0"
+            >
+              ↑
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+
 export default function App() {
   const [activeSection, setActiveSection] = useState("home");
   const [lang, setLang] = useState<Lang>("en");
@@ -819,6 +1087,9 @@ export default function App() {
 
         <div className="flex-1 overflow-y-auto overscroll-contain">{renderSection()}</div>
       </main>
+
+      {/* Floating AI chat — only after welcome */}
+      <PortfolioAI lang={lang} />
     </div>
   );
 }
